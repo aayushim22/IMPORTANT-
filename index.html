@@ -1,71 +1,183 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Open the link below asap</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Question... ❤️</title>
     <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --secondary-pink: #ffccd5;
+            --dark-pink: #d6336c;
+        }
+
         body {
             text-align: center;
-            font-family: Arial, sans-serif;
-            background-color: #ffccd5;
-            margin-top: 100px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--secondary-pink);
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Floating Hearts Background */
+        .heart {
+            position: absolute;
+            color: rgba(255, 77, 109, 0.5);
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            animation: float 6s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
         h1 {
-            font-size: 50px;
-            color: #d6336c;
+            font-size: 3.5rem;
+            color: var(--dark-pink);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            z-index: 10;
+        }
+
+        .container {
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 40px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
         button {
-            padding: 15px 30px;
-            font-size: 20px;
+            padding: 15px 40px;
+            font-size: 22px;
+            font-weight: bold;
             border: none;
-            border-radius: 10px;
+            border-radius: 50px;
             cursor: pointer;
-            margin: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 10px;
         }
 
         #yesBtn {
-            background-color: #ff4d6d;
+            background-color: var(--primary-pink);
             color: white;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
+            background-color: #ff758f;
         }
 
         #noBtn {
-            background-color: #6c757d;
-            color: white;
+            background-color: #f8f9fa;
+            color: #6c757d;
             position: absolute;
+            transition: all 0.3s ease;
         }
 
+        /* Success Message Styling */
         #message {
-            font-size: 30px;
-            color: #d6336c;
-            margin-top: 30px;
+            display: none;
+            padding: 20px;
+            max-width: 80%;
+        }
+
+        .heart-big {
+            font-size: 80px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .emotional-text {
+            color: #4a4a4a;
+            line-height: 1.6;
+            font-size: 1.2rem;
+            font-style: italic;
         }
     </style>
 </head>
-
 <body>
 
-    <h1>Will You Be My Valentine? 💖</h1>
+    <div id="heart-container"></div>
 
-    <button id="yesBtn" onclick="yesClicked()">YES 💘</button>
-    <button id="noBtn" onmouseover="moveButton()">NO 😜</button>
+    <div class="container" id="main-content">
+        <h1 id="question">Will You Be My Valentine? 💖</h1>
+        <button id="yesBtn" onclick="yesClicked()">YES 💘</button>
+        <button id="noBtn" onmouseover="moveButton()" onclick="moveButton()">NO 😜</button>
+    </div>
 
-    <div id="message"></div>
+    <div id="message">
+        <div class="heart-big">💖</div>
+        <h1>I Knew You'd Say Yes!</h1>
+        <p class="emotional-text">
+            "Every moment with you feels like a beautiful dream I never want to wake up from. <br>
+            You make my world brighter, my laughs louder, and my heart fuller. <br>
+            I can't wait to spend this Valentine's making more memories with you."
+        </p>
+        <p style="font-size: 1.5rem; color: var(--primary-pink); font-weight: bold;">Forever Vibes Only 🥰</p>
+    </div>
 
     <script>
-        function yesClicked() {
-            document.getElementById("message").innerHTML =
-                "YAYYY 💖 I promise chocolates, flowers & forever vibes 🥰";
+        // Create background hearts
+        function createHearts() {
+            const container = document.getElementById('heart-container');
+            for (let i = 0; i < 25; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    heart.style.opacity = Math.random();
+                    container.appendChild(heart);
+                    
+                    // Remove heart after animation
+                    setTimeout(() => heart.remove(), 6000);
+                }, i * 300);
+            }
         }
+        setInterval(createHearts, 3000);
+        createHearts();
 
         function moveButton() {
-            var x = Math.random() * window.innerWidth;
-            var y = Math.random() * window.innerHeight;
+            const btn = document.getElementById("noBtn");
+            // Subtract button width/height so it doesn't go off screen
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
 
-            document.getElementById("noBtn").style.left = x + "px";
-            document.getElementById("noBtn").style.top = y + "px";
+            btn.style.left = x + "px";
+            btn.style.top = y + "px";
+        }
+
+        function yesClicked() {
+            // Hide main content
+            document.getElementById("main-content").style.display = "none";
+            // Show emotional message
+            const msg = document.getElementById("message");
+            msg.style.display = "block";
+            // Change background to a warmer color
+            document.body.style.backgroundColor = "#ffebef";
+            // Add extra burst of hearts
+            for(let i=0; i<50; i++) {
+                createHearts();
+            }
         }
     </script>
-
 </body>
 </html>
